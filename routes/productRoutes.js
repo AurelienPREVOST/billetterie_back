@@ -31,7 +31,7 @@ module.exports = (app,db)=>{
     })
 
 
-    //ROUTE DE TEST POUR PRODUCT AFFICHAGE PAR tYPE
+    //ROUTE POUR AFFICHAGE de PRODUCT  PAR tYPE
     app.get('/product/type/:type', async (req, res, next) => {
       let products = await productModel.getAllProductsType(req.params.type)
       if(products.code){
@@ -40,7 +40,6 @@ module.exports = (app,db)=>{
         res.json({status: 200, result: products})
       }
     })
-    //FIN TEST PRODUCT
 
     //route permettant de récuperer un seul produit
     app.get('/product/:id', async (req, res, next) => {
@@ -104,7 +103,7 @@ module.exports = (app,db)=>{
         //si on a pas envoyé de req.files via le front ou que cet objet ne possède aucune propriété
     if (!req.files || Object.keys(req.files).length === 0) {
       //on envoi une réponse d'erreur
-          res.json({status: 400, msg: "La photo n'a pas pu être récupérée"});
+          res.json({status: 400, msg: "La photo n'a pas pu être récupérée"})
       }
       //la fonction mv va envoyer l'image dans le dossier que l'on souhaite.
       req.files.image.mv('public/images/'+req.files.image.name, function(err) {
@@ -122,13 +121,12 @@ module.exports = (app,db)=>{
 
     // Route de recherche d'events via keyword partiel depuis la searchBar
     app.get('/event', async (req, res, next) => {
-      // le resultat donne http://localhost:9000/event?PartialQuery=marron par exemple dans postman
-      const keyword = req.query.PartialQuery; // Récupérez le paramètre PartialQuery de la chaîne de requête
+      const keyword = req.query.PartialQuery
       try {
-        const events = await productModel.getAllProductsWhereNameLooksLike(keyword);
-        res.json({ status: 200, result: events });
+        const events = await productModel.getAllProductsWhereNameLooksLike(keyword)
+        res.json({ status: 200, result: events })
       } catch (error) {
-        res.status(500).json({ status: 500, msg: "Il y a eu un problème", err: error });
+        res.status(500).json({ status: 500, msg: "Il y a eu un problème", err: error })
       }
     });
 }

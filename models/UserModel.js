@@ -39,6 +39,29 @@ class UserModel {
       })
     }
 
+      //récupération d'un user_id en fonction de son mail
+      static getUserIdByEmail(email){
+        return db.query("SELECT id FROM users WHERE email = ?", [email])
+        .then((res)=>{
+            return res
+        })
+        .catch((err)=>{
+            return err
+        })
+      }
+
+      static getEmailById(id){
+        return db.query("SELECT email FROM users WHERE id = ?", [id])
+        .then((res)=>{
+            return res
+        })
+        .catch((err)=>{
+            return err
+        })
+      }
+
+
+
     //récupération d'un utilisateur par son id
     static getOneUser(id){
       return db.query("SELECT * FROM users WHERE id = ?", [id])
@@ -96,5 +119,5 @@ class UserModel {
 	    let user = await db.query('SELECT * FROM users WHERE key_id = ?', [key_id])
 
 	    return user
-	}
+	  }
   }

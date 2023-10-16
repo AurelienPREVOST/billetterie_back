@@ -2,10 +2,16 @@ const fs = require('fs')//va nous permettre de supprimer des images locales
 const withAuth = require('../withAuth')
 const adminAuth = require('../adminAuth')
 const { machine } = require('os')
+const mail = require('../lib/mailing');
+const UserModel = require('../models/UserModel');
+const QRCode = require('qrcode');
+
 
 module.exports = (app,db)=>{
 
   const placeModel = require('../models/PlaceModel')(db)
+  const userModel = require('../models/UserModel')(db)
+
 
   //routes permettant de récuperer tout les produits
   app.get('/place/all/product/:id', async (req, res, next) => {
@@ -18,58 +24,55 @@ module.exports = (app,db)=>{
   })
 
 
+  app.get('/placesAvailable/', async (req, res, next) => {
+    let placesAvailable = await placeModel.getPlacesAvailable()
+    if(placesAvailable.code){
+      res.json({status: 500, msg: "Oops", err: placesAvailable})
+    }else{
+      res.json({status: 200, result: placesAvailable})
+    }
+  })
 
-
-      //routes TEST POUR LE NOMBRE DE PLACE
-      // app.get('/placesAvailable/:test', async (req, res, next) => {
-      //   let placesAvailable = await placeModel.getPlacesAvailable(req.params.test)
-      //   if(placesAvailable.code){
-      //     res.json({status: 500, msg: "Oops", err: placesAvailable})
-      //   }else{
-      //     res.json({status: 200, result: placesAvailable})
-      //   }
-      // })
-            app.get('/placesAvailable/', async (req, res, next) => {
-        let placesAvailable = await placeModel.getPlacesAvailable()
-        if(placesAvailable.code){
-          res.json({status: 500, msg: "Oops", err: placesAvailable})
-        }else{
-          res.json({status: 200, result: placesAvailable})
-        }
-      })
-
-
-
-///////////TENTATIVE DE ROUTES VERS LE MODEL POUR LES SEATAPI A REMETTRE SI LA NOUVELLE VERSION NE MARCHE PAS
-//   app.put('/place/updateseat/:id', async (req, res, next) => {
-//     try {
-//       const { id } = req.params;
-//       await placeModel.updateSeatStatusToSold(id);
-//       res.json({ status: 200, msg: "La mise à jour du statut a réussi." });
-//     } catch (error) {
-//       console.error("Erreur lors de la mise à jour du statut :", error);
-//       res.status(500).json({ status: 500, msg: "Erreur lors de la mise à jour du statut.", err: error });
-//     }
-//   });
-// }
 
   app.put('/place/updateseat/:id', async (req, res, next) => {
     try {
       const { id } = req.params;
-      const { clientId } = req.body; // Ajoutez ceci pour récupérer l'ID du client depuis le corps de la requête
+      const { clientId, numOrder } = req.body;
 
-      // Maintenant, vous avez à la fois l'ID de la place à mettre à jour et l'ID du client
-      // Vous pouvez utiliser ces informations pour effectuer la mise à jour dans votre base de données
+      await placeModel.updateSeatStatusToSold(id, clientId, numOrder);
+      const sql = 'SELECT place.code FROM place WHERE place.user_id = ? AND place.order_id = ?';
+      db.query(sql, [clientId, numOrder], async (error, results) => {
+        if (error) {
+          console.error('Erreur lors de la requête SQL :', error);
+          res.status(500).json({ status: 500, msg: "Erreur lors de la mise à jour du statut.", err: error });
+        } else {
+          const codes = results.map(result => result.code);
+          console.log("codes", codes);
+          const emailClient = await userModel.getEmailById(clientId);
+          const codeElements = codes.map((code, index) => `<li key=${index}><a href="http://127.0.0.1:5173/emailPlaces/code=${code}">${code}</a></li>`);
+          const emailContent = `
+            <p>Vos places pour votre évènement :</p>
+            <ul>
+              ${codeElements.join('')}
+            </ul>
+            <p>Pour afficher votre place, rendez-vous sur votre profil ou bien cliquez sur les liens ci-dessus</p>
+          `;
 
-      // Exemple : mettez à jour la place avec l'ID du client
-      await placeModel.updateSeatStatusToSold(id, clientId);
+          mail(
+            emailClient[0].email,
+            "Vos places pour votre évènement",
+            emailContent
+          );
 
-      res.json({ status: 200, msg: "La mise à jour du statut a réussi." });
+          res.json({ status: 200, msg: "La mise à jour du statut a réussi.", codes });
+        }
+      });
     } catch (error) {
       console.error("Erreur lors de la mise à jour du statut :", error);
       res.status(500).json({ status: 500, msg: "Erreur lors de la mise à jour du statut.", err: error });
     }
   });
+
 
 
   app.get('/places/:userId', async (req, res) => {
@@ -86,8 +89,6 @@ module.exports = (app,db)=>{
 
 
 
-
-////////////////////////
   app.get('/place/checking/:id', async (req, res, next) => {
     let places = await placeModel.getTicketData(req.params.id)
     if(places.code){

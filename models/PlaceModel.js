@@ -25,8 +25,8 @@ class PlaceModel {
     })
   }
 
-  static updateSeatStatusToSold(seatId, userId) {
-    return db.query('UPDATE place SET status = "sold", user_id = ? WHERE id = ?', [userId, seatId])
+  static updateSeatStatusToSold(seatId, userId, numOrder) {
+    return db.query('UPDATE place SET status = "sold", user_id = ?, order_id = ? WHERE id = ?', [userId, numOrder, seatId])
     .then((res) => {
         return res;
     })
@@ -64,44 +64,4 @@ class PlaceModel {
       return err;
     });
   }
-
-
-        ///////////TEST
-
-          //   static getPlacesAvailable(test) {
-          //   return db.query('SELECT COUNT(*) FROM place WHERE product_id = ? AND user_id IS NULL', [test])
-          //   .then((res) => {
-          //     return res;
-          //   })
-          //   .catch((err) => {
-          //     return err;
-          //   });
-          // }
-
-
-                    ///TEST AVEC OLIV
-                    // static getPlacesAvailable() {
-                    //   return db.query('SELECT products.id, COUNT(*) FROM products LEFT JOIN place ON products.id = place.product_id WHERE place.user_id IS NULL GROUP BY products.id')
-                    //   .then((res) => {
-                    //     console.log("RES DE GETPLACESAVAILABLE=>", res)
-                    //     return res;
-                    //   })
-                    //   .catch((err) => {
-                    //     console.log("oops")
-                    //     return err;
-                    //   });
-                    // }
-
-
-                    // static getPlacesAvailable() {
-                    //   return db.query('SELECT products.*, COALESCE(place_count, 0) AS count FROM products LEFT JOIN (SELECT product_id, COUNT(*) AS place_count FROM place WHERE user_id IS NULL GROUP BY product_id) AS place_counts ON products.id = place_counts.product_id')
-                    //     .then((res) => {
-                    //       console.log("RES DE GETPLACESAVAILABLE=>", res);
-                    //       return res;
-                    //     })
-                    //     .catch((err) => {
-                    //       console.log("Oops", err);
-                    //       return err;
-                    //     });
-                    // }
 }

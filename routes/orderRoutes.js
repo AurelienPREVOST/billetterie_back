@@ -11,71 +11,32 @@ module.exports = (app, db) => {
     //route de sauvegarde d'une commande
     app.post('/order/save', withAuth, async (req, res, next)=>{
         let totalAmount = 0;
-        //enregistrement de l'order (fonction)
         let orderInfos = await orderModel.saveOneOrder(req.body.user_id, totalAmount)
-        //on récup dans l'objet de réponse l'insertId (l'id qu'il vient d'insérer dans le bdd)
         let id = orderInfos.insertId
-        //on boucle sur le panier passé dans req.body.basket (pour enregistrer le detail de chaque produit)
         req.body.basket.map(async (b) => {
-            //on récup les infos d'un produit par son id (on stock dans une variable product)
             let product = await productModel.getOneProduct(b.id)
-            //on ajoute une propriété safePrice à l'objet du tour de boucle en lui affectant le prix de product en chiffre à virgule
             b.safePrice = parseFloat(product[0].price)
-            //on appel la fonction pour sauvegarder un détail de cette commande en envoyant l'id de la commande et le produit du tour de boucle
             let detail = await orderModel.saveOneOrderDetail(id, b)
-            //on additionne au totalAmount la quantité du produit demandé multiplié par le safePrice
             totalAmount += parseInt(b.quantityInCart) * parseFloat(b.safePrice)
-            //on met à jour le montant total de la commmande (fonction)
             let update = await orderModel.updateTotalAmount(id, totalAmount)
         })
-        //on retourne le json de 200 avec l'id de la commande qu'on vient d'enregistrer
         res.json({status: 200, orderId: id})
     })
 
-                  // //route de gestion du paiement (va analyser le bon fonctionnement du paiement (suivi))
-                  // app.post('/order/payment', withAuth, async (req, res, next)=>{
-                  //     let order = await orderModel.getOneOrder(req.body.orderId)
-                  //     //on lance le suivi de paiement
-                  //     const paymentIntent = await stripe.paymentIntents.create({
-                  //         amount: order[0].totalAmount*100, //il est en cts donc on mutiplie le montant à payer par 100
-                  //         currency: 'eur', //indique la devise de paiement à effectuer
-                  //         metadata: {integration_check: 'accept_a_payment'},//on consulte si le paiement est accepté ou non
-                  //         receipt_email: req.body.email //l'utilisateur recoit sa confirmation de paiement par email
-                  //     })
-                  //     res.json({
-                  //       client_secret: paymentIntent['client_secret']
-                  //     })
-                  // })
-
-                  // test de mail de confirmation d'achat
-                  app.post('/order/payment', withAuth, async (req, res, next) => {
-                    let order = await orderModel.getOneOrder(req.body.orderId);
-                    console.log("---------------------------------------------------------------------")
-                    console.log("req =>", req)
-                    console.log("---------------------------------------------------------------------")
-                    console.log("res =>", res)
-                    console.log("---------------------------------------------------------------------")
-                    console.log("order =>", order)
-                    // On lance le suivi de paiement
-                    const paymentIntent = await stripe.paymentIntents.create({
-                      amount: order[0].totalAmount * 100, // Il est en centimes, donc on multiplie par 100
-                      currency: 'eur', // Indique la devise de paiement à effectuer
-                      metadata: { integration_check: 'accept_a_payment' },
-                      receipt_email: req.body.email // L'utilisateur reçoit sa confirmation de paiement par email
-                    });
-
-                    // Ici, vous pouvez envoyer l'email de confirmation de commande
-                    mail(
-                      req.body.email,
-                      "Vos places pour votre évènement",
-                      "Veuillez trouver ci-joint vos places pour votre événement",
-                      "insertion d'une image en base 64"
-                    );
-
-                    res.json({
-                      client_secret: paymentIntent['client_secret']
-                    });
-                  });
+    // Payement stripe
+    app.post('/order/payment', withAuth, async (req, res, next) => {
+      let order = await orderModel.getOneOrder(req.body.orderId);
+      // On lance le suivi de paiement
+      const paymentIntent = await stripe.paymentIntents.create({
+        amount: order[0].totalAmount * 100,
+        currency: 'eur',
+        metadata: { integration_check: 'accept_a_payment' },
+        receipt_email: req.body.email
+      });
+      res.json({
+        client_secret: paymentIntent['client_secret']
+      });
+    });
 
 
     //route de modification du status de paiement de la commande
