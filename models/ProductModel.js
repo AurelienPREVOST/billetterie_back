@@ -80,7 +80,7 @@ class ProductModel {
         return response;
       } catch (error) {
         console.error("Error in getAllProductsWhereNameLooksLike:", error);
-        throw error; // Rejetez l'erreur pour qu'elle puisse être capturée par la route
+        throw error
       }
     }
 }

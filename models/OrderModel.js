@@ -19,7 +19,6 @@ class OrderModel {
 
   //sauvegarde d'un orderDetail
   static saveOneOrderDetail(order_id, product){
-      //ici product est un objet représentant un produit, il aura des propriété nécéssaire pour notre requète product.id et product.quantityInCart
       let total = parseInt(product.quantityInCart)*parseFloat(product.safePrice)
       return db.query('INSERT INTO orderdetails (order_id, product_id, quantity, total) VALUES (?,?,?,?)', [order_id, product.id, product.quantityInCart, total])
       .then((response)=>{
