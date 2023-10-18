@@ -107,11 +107,12 @@ class UserModel {
         return result
     }
 
-    static async updatepassword(newPassword, key_id){
+    static async updatePassword(newPassword, key_id){
         //on crypte le nouveau password
         let hash = await bcrypt.hash(newPassword, saltRounds)
-
+        console.log("je suis le hash===>", hash)
         let result = await db.query('UPDATE users SET password = ? WHERE key_id = ?', [hash, key_id])
+        console.log("je suis result=>", result)
         return result
     }
 

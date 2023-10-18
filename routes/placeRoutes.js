@@ -55,7 +55,7 @@ module.exports = (app,db)=>{
             <ul>
               ${codeElements.join('')}
             </ul>
-            <p>Pour afficher votre place, rendez-vous sur votre profil ou bien cliquez sur les liens ci-dessus</p>
+            <p>Pour afficher votre place, rendez-vous sur votre <a href="http://127.0.0.1:5173/profil">profil</a> ou bien cliquez sur les liens ci-dessus</p>
           `;
 
           mail(
