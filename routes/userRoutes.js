@@ -13,26 +13,27 @@ module.exports = (app, db)=>{
   //route d'enregistrement d'un utilisateur
   app.post('/user/save', async (req, res, next) => {
     const user = await userModel.getUserByEmail(req.body.email)
+
     if(user.code){
       res.json({status: 500, err: user})
     } else {
-        if(user.length > 0){
-          res.json({status: 401, msg: "Email déjà utilisé!"})
+      if(user.length > 0){
+        res.json({status: 401, msg: "Email déjà utilisé!"})
+      } else {
+        let result = await userModel.saveOneUser(req)
+        if(result.code){
+          res.json({status: 500,msg: "echec requète", err: result})
         } else {
-            let result = await userModel.saveOneUser(req)
-            if(result.code){
-                res.json({status: 500,msg: "echec requète", err: result})
-            } else {
-                mail(
-                  req.body.email,
-                  "Validation de votre compte Billetterie",
-                  "Bienvenue sur votre billetterie",
-                  `Pour valider votre mail, cliquez <a href="http://localhost:9000/user/validate/${result.key_id}">ici</a>!`
-                )
-                // res.json({status: 200, msg: "Utilisateur bien enregistré!"})
-                res.redirect('http://127.0.0.1:5173/accountValidate');
-            }
+          mail(
+            req.body.email,
+            "Validation de votre compte Billetterie",
+            "Bienvenue sur votre billetterie",
+            `Pour valider votre mail, cliquez <a href="http://localhost:9000/user/validate/${result.key_id}">ici</a>!`
+          )
+          // res.json({status: 200, msg: "Utilisateur bien enregistré!"})
+          res.redirect('http://127.0.0.1:5173/accountValidate');
         }
+      }
     }
   })
 
@@ -66,7 +67,7 @@ module.exports = (app, db)=>{
               res.json({status: 200, token: token, user: user[0]})
             }
           }else{
-            res.json({status: 401, error: "Votre mot de passe est incorrect!"})
+            res.json({status: 401, msg: "Votre mot de passe est incorrect!"})
           }
         }
       }
