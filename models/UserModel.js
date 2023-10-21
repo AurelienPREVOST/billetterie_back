@@ -12,15 +12,12 @@ module.exports = (_db)=>{
 class UserModel {
     //sauvegarde d'un membre
     static saveOneUser(req){
-      console.log("je rentre dans saveOneUser du model")
-      // console.log("req", req)
       return bcrypt.hash(req.body.password, saltRounds)
       .then((hash)=>{
           const key_id = randomId(len, pattern);
           return db.query('INSERT INTO users (firstName, lastName, email, password, role, address, zip, city, phone, creationTimestamp, validate, key_id) VALUES (?, ?, ?, ?, "user", ?, ?, ?, ?, NOW(), "no", ?)', [req.body.firstName, req.body.lastName, req.body.email, hash, req.body.address, req.body.zip, req.body.city, req.body.phone, key_id])
           .then((res)=>{
             res.key_id = key_id // on ajoute à l'objet la valeur key_id, sans ca key_id sera undefined
-            console.log("JE SORS DE USERMODEL SANS PROBLEME et return res=>", res)
             return res
           })
           .catch((err)=>{
