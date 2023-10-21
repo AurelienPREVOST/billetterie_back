@@ -121,4 +121,9 @@ class UserModel {
 
 	    return user
 	  }
+
+    static async checkValidateYes(email) {
+      let check = await db.query('SELECT validate FROM users WHERE email = ?', [email])
+      return check
+    }
   }

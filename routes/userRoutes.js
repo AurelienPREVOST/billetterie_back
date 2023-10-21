@@ -7,10 +7,20 @@ const jwt = require('jsonwebtoken')
 const secret = 'user_secret'
 const withAuth = require('../withAuth')
 const mail = require('../lib/mailing');
+const mailReceived = require('../lib/mailReceived')
 
 
 module.exports = (app, db)=>{
     const userModel = require('../models/UserModel')(db)
+
+    app.post('/envoiMailFormContact', async (req, res, next) => {
+      const { subject, myContact, message } = req.body;
+      // Utilisation de la fonction d'envoi d'e-mail
+      mailReceived(myContact, subject, message); // Respectez l'ordre des paramètres
+      res.json({ status: 200, msg: "Mail depuis le formulaire de contact envoyé" });
+    });
+
+
 
     //route d'enregistrement d'un utilisateur
     app.post('/user/save', async (req, res, next) => {
@@ -152,4 +162,15 @@ module.exports = (app, db)=>{
       res.redirect('http://127.0.0.1:5173/user/changePasswordSuccess');
     }
   })
+
+
+  app.get('/user/checkMailValidation', async (req, res, next) => {
+    let email = req.query.email;
+    let result = await userModel.checkValidateYes(email);
+    if (result.code) {
+      res.status(500).json({ status: 500, msg: "erreur lors de la vérification de validation", err: result.code });
+    } else {
+      res.status(200).json({ status: 200, result: result });
+    }
+  });
 }
