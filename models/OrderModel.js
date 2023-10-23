@@ -40,6 +40,18 @@ class OrderModel {
     })
   }
 
+  static getPlacesDetailAboutOrder(id) {
+    return db.query('SELECT * FROM `place` WHERE order_id=?', [id])
+    .then((res)=>{
+      console.log("*************************")
+      console.log("getPlacesDetailAboutOrder le res => ", res)
+      return res
+    })
+    .catch((err)=>{
+        return err
+    })
+  }
+
   //récupération d'une commande en fonction d'un id
   static getOneOrder(id){
     return db.query('SELECT * FROM orders WHERE id = ?', [id])
@@ -64,7 +76,7 @@ class OrderModel {
 
   //récupération de toutes les commandes
   static getAllOrders(){
-      return db.query('SELECT * FROM orders')
+      return db.query('SELECT * FROM orders WHERE status="payed"')
       .then((res)=>{
           return res
       })

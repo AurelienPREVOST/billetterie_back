@@ -120,4 +120,22 @@ module.exports = (app, db) => {
         return res.status(500).json({ status: 500, msg: "Erreur inattendue", err: error });
       }
     });
+
+    // Route pour avoir les places achetés selon le numero de commande
+
+    app.get('/order/placesInformations/:id', withAuth, async (req, res, next) => {
+      try {
+        const orderId = req.params.id;
+        const orderDetails = await orderModel.getPlacesDetailAboutOrder(orderId);
+
+        if (orderDetails.code) {
+          return res.status(500).json({ status: 500, msg: "Erreur", err: orderDetails });
+        }
+
+        return res.json({ status: 200, result: orderDetails });
+      } catch (error) {
+        console.error("Erreur lors de la récupération des détails de la commande :", error);
+        return res.status(500).json({ status: 500, msg: "Erreur inattendue", err: error });
+      }
+    });
 }
