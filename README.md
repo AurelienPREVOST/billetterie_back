@@ -59,8 +59,9 @@ Cette parti doit être synchronisé avec votre base de donnée qu'elle soit hebe
 
 Sentez vous libre d'importer la seed fictive suivante pour peupler votre base de donnée et essayer de suite l'application:
 
-```bash
-# Lignes 1 à 10
+```html
+<pre>
+<code>
 -- phpMyAdmin SQL Dump
 -- version 5.1.0
 -- https://www.phpmyadmin.net/
@@ -71,7 +72,6 @@ Sentez vous libre d'importer la seed fictive suivante pour peupler votre base de
 -- Version de PHP : 8.0.3
 
 SET SQL_MODE = "NO_AUTO_VALUE_ON_ZERO";
-# Pour voir plus de lignes, faites défiler vers le bas.
 
 START TRANSACTION;
 SET time_zone = "+00:00";
@@ -2248,6 +2248,8 @@ COMMIT;
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
 /*!40101 SET CHARACTER_SET_RESULTS=@OLD_CHARACTER_SET_RESULTS */;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
+</pre>
+</code>
 ```
 
 Bon à savoir : Pour l'administrateur : admin@gmail.com 1234 (la securité avant tout👍)
