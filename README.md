@@ -10,7 +10,12 @@ Uniquement la partie back-end se trouve ici, codé en Node JS 19.
 ```bash
 npm i bcrypt cors express express-fileupload jsonwebtoken nodemon promise-mysql stripe html5-qrcode qrcode qrcode.react chai mocha sinon sinon-chai
 ```
+
+
 NB : tout ce qui suit "stripe" est pour l'instant (24/10/23) inutile car non utilisé par l'environement back. A terme des tests unitaires seront implémentés et un qrcode sera envoyé par email après un achat dans le corps de l'email (complètera l'actuel lien de redirection vers le profil dans le navigateur)
+
+
+
 
 
 ## Etape 2 - modifier les fichiers suivants à la racine du projet :
@@ -19,21 +24,31 @@ NB : tout ce qui suit "stripe" est pour l'instant (24/10/23) inutile car non uti
 project/client_secret_XXXXXXXXXXXXXX
 ```
 
+
 ```bash
 {"web":{"client_id":"My_client_id","project_id":"My_project_name","auth_uri":"https://accounts.google.com/o/oauth2/auth","token_uri":"https://oauth2.googleapis.com/token","auth_provider_x509_cert_url":"https://www.googleapis.com/oauth2/v1/certs","client_secret":"My_secret_client_google"}}
 ```
+
+
 Pour obtenir ces informations, créez vous un profil sur on https://console.cloud.google.com/
+
+
 
 
 
 project/lib/mailing.js & project/lib/mailReceived.js
 
+
 Vous aurez chaque heure à remplacer 2 refresh token dans ces 2 fichiers ainsi qu'un access token. Gmail a un mode developpeur gratuit mais limité dans le temps à 1heure.
 
 ![image](https://github.com/AurelienPREVOST/billetterie_front/assets/102169301/e865cf69-3bfe-44ab-a537-ca035c92009c)
 
+
+
 Pour obtenir ces informations rendez vous sur https://developers.google.com/oauthplayground/ et choisissez gmail API V1 :
 ![image](https://github.com/AurelienPREVOST/billetterie_front/assets/102169301/c05000ad-e786-411d-9fac-2bd064a1aae6)
+
+
 Cliquez sur "authorized API" and autorisé le compte gmail affecté. 
 Après avoir cliquez sur généré 2 inputs apparaissent chacun avec le graal en question
 (cette etape est necessaire pour envoyer des mails de notification à vos clients)
@@ -53,11 +68,19 @@ module.exports = {
     }
 ```
 
+
+
 Cette parti doit être synchronisé avec votre base de donnée qu'elle soit hebergé en ligne ou en local (exemple: wamp). Ici nous utilisons mySQL/PHPMYADMIN en ligne et les informations sont à la racine de la base de données générées:
+
+
 
 ![image](https://github.com/AurelienPREVOST/billetterie_back/assets/102169301/d623b409-82d6-4964-99ef-71f69f9d5baf)
 
+
+
 Sentez vous libre d'importer la seed fictive suivante pour peupler votre base de donnée et essayer de suite l'application:
+
+
 
 <details>
 <summary>Cliquez pour afficher la suite</summary>
