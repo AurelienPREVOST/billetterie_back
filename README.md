@@ -59,6 +59,8 @@ Cette parti doit être synchronisé avec votre base de donnée qu'elle soit hebe
 
 Sentez vous libre d'importer la seed fictive suivante pour peupler votre base de donnée et essayer de suite l'application:
 
+<details>
+<summary>Cliquez pour afficher la suite</summary>
 ```html
 <pre>
 <code>
@@ -2250,6 +2252,7 @@ COMMIT;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 </pre>
 </code>
+</details>
 ```
 
 Bon à savoir : Pour l'administrateur : admin@gmail.com 1234 (la securité avant tout👍)
