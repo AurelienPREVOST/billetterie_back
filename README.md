@@ -2253,7 +2253,7 @@ COMMIT;
 </pre>
 </code>
 </details>
-```
+
 
 Bon à savoir : Pour l'administrateur : admin@gmail.com 1234 (la securité avant tout👍)
 
