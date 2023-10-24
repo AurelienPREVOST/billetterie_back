@@ -60,16 +60,19 @@ Cette parti doit être synchronisé avec votre base de donnée qu'elle soit hebe
 Sentez vous libre d'importer la seed fictive suivante pour peupler votre base de donnée et essayer de suite l'application:
 
 ```bash
+# Lignes 1 à 10
 -- phpMyAdmin SQL Dump
 -- version 5.1.0
 -- https://www.phpmyadmin.net/
 --
--- Hôte : db.3wa.io
+-- Hôte : aurelien
 -- Généré le : mar. 24 oct. 2023 à 21:56
 -- Version du serveur :  5.7.33-0ubuntu0.18.04.1-log
 -- Version de PHP : 8.0.3
 
 SET SQL_MODE = "NO_AUTO_VALUE_ON_ZERO";
+# Pour voir plus de lignes, faites défiler vers le bas.
+
 START TRANSACTION;
 SET time_zone = "+00:00";
 
@@ -80,7 +83,7 @@ SET time_zone = "+00:00";
 /*!40101 SET NAMES utf8mb4 */;
 
 --
--- Base de données : `aurelienprevost_tutoriel_bdd`
+-- Base de données : `aurelienprevost_billetterie_bdd`
 --
 
 -- --------------------------------------------------------
