@@ -2278,6 +2278,11 @@ COMMIT;
 </details>
 
 
+Schema de la base de donnée : 
+
+![image](https://github.com/AurelienPREVOST/billetterie_back/assets/102169301/795bb02d-220b-4ea4-8830-8df88e683eaa)
+
+
 Bon à savoir : Pour l'administrateur : admin@gmail.com 1234 (la securité avant tout👍)
 
 ## Etape 3 - on lance le back 
