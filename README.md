@@ -29,6 +29,13 @@ project/client_secret_XXXXXXXXXXXXXX
 {"web":{"client_id":"My_client_id","project_id":"My_project_name","auth_uri":"https://accounts.google.com/o/oauth2/auth","token_uri":"https://oauth2.googleapis.com/token","auth_provider_x509_cert_url":"https://www.googleapis.com/oauth2/v1/certs","client_secret":"My_secret_client_google"}}
 ```
 
+```plaintext
+project/routes/orderRoutes.js
+```
+![image](https://github.com/AurelienPREVOST/billetterie_back/assets/102169301/0121c312-13f1-429f-a4e8-2ec17ff668ff)
+
+On modifie la clé stripe en fonction de la clé fournis sur son profil perso. Si pas de compte de stripe encore? ==> https://dashboard.stripe.com/register
+
 
 Pour obtenir ces informations, créez vous un profil sur on https://console.cloud.google.com/
 
