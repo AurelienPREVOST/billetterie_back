@@ -84,7 +84,6 @@ Sentez vous libre d'importer la seed fictive suivante pour peupler votre base de
 
 <details>
 <summary>Cliquez pour afficher la suite</summary>
-```html
 <pre>
 <code>
 -- phpMyAdmin SQL Dump
