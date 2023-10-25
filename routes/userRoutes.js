@@ -13,14 +13,13 @@ const mailReceived = require('../lib/mailReceived')
 module.exports = (app, db)=>{
     const userModel = require('../models/UserModel')(db)
 
+    // Routes pour envoyer un mail depuis l'onglet contact dans le footer
     app.post('/envoiMailFormContact', async (req, res, next) => {
       const { subject, myContact, message } = req.body;
       // Utilisation de la fonction d'envoi d'e-mail
-      mailReceived(myContact, subject, message); // Respectez l'ordre des paramètres
+      mailReceived(myContact, subject, message) // Attention: On respecte l'ordre des paramètres
       res.json({ status: 200, msg: "Mail depuis le formulaire de contact envoyé" });
     });
-
-
 
     //route d'enregistrement d'un utilisateur
     app.post('/user/save', async (req, res, next) => {
@@ -137,9 +136,7 @@ module.exports = (app, db)=>{
       if(validate.code){
         res.json({status: 500, error: validate})
       } else {
-        //ici on pourrait rediriger vers le front
-        // res.json({status: 200, msg: "compte utilisateur validé"}) // Renvoi un json
-        res.redirect('http://127.0.0.1:5173/accountValidate'); // je renvoi vers un front non custom de validation
+        res.redirect('http://127.0.0.1:5173/accountValidate') // je renvoi vers un front non custom de validation
       }
     })
 
@@ -158,7 +155,6 @@ module.exports = (app, db)=>{
     if (result.code) {
       res.json({status: 500, msg: "Erreur à la reinitialisation du mot de passe", error: result})
     } else {
-      // res.render('changePasswordSuccess')
       res.redirect('http://127.0.0.1:5173/user/changePasswordSuccess');
     }
   })

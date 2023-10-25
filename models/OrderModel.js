@@ -40,11 +40,10 @@ class OrderModel {
     })
   }
 
+  // Obtenir toutes les places et leur detail en fonction d'un numero de commande
   static getPlacesDetailAboutOrder(id) {
     return db.query('SELECT * FROM `place` WHERE order_id=?', [id])
     .then((res)=>{
-      console.log("*************************")
-      console.log("getPlacesDetailAboutOrder le res => ", res)
       return res
     })
     .catch((err)=>{

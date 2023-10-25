@@ -93,7 +93,7 @@ module.exports = (app, db) => {
         }
     })
 
-
+    // Route pour récupérer les détails d'une commande par user ID
     app.get('/myorders/:user_id', withAuth, async (req, res, next) => {
       try {
         const userId = req.params.user_id; // Récupérez l'ID de l'utilisateur à partir des paramètres de la route
@@ -122,7 +122,6 @@ module.exports = (app, db) => {
     });
 
     // Route pour avoir les places achetés selon le numero de commande
-
     app.get('/order/placesInformations/:id', withAuth, async (req, res, next) => {
       try {
         const orderId = req.params.id;

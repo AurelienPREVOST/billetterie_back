@@ -1,4 +1,3 @@
-
 module.exports = (app, db)=>{
     const NewsletterModel = require('../models/NewsletterModel')(db)
 
