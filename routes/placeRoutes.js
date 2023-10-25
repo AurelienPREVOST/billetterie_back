@@ -3,7 +3,6 @@ const withAuth = require('../withAuth')
 const adminAuth = require('../adminAuth')
 const { machine } = require('os')
 const mail = require('../lib/mailing');
-const UserModel = require('../models/UserModel');
 const QRCode = require('qrcode');
 
 
@@ -13,7 +12,7 @@ module.exports = (app,db)=>{
   const userModel = require('../models/UserModel')(db)
 
 
-  //routes permettant de récuperer tout les produits
+  //routes permettant de récuperer toute les places d'un produits par son id
   app.get('/place/all/product/:id', async (req, res, next) => {
     let places = await placeModel.getAllPlacesByProductId(req.params.id)
     if(places.code){
@@ -23,7 +22,7 @@ module.exports = (app,db)=>{
     }
   })
 
-
+  // Routes pour donner les places disponibles
   app.get('/placesAvailable/', async (req, res, next) => {
     let placesAvailable = await placeModel.getPlacesAvailable()
     if(placesAvailable.code){
@@ -33,7 +32,7 @@ module.exports = (app,db)=>{
     }
   })
 
-
+  // Routes de mise à jour des places (status)
   app.put('/place/updateseat/:id', async (req, res, next) => {
     try {
       const { id } = req.params;
@@ -47,7 +46,6 @@ module.exports = (app,db)=>{
           res.status(500).json({ status: 500, msg: "Erreur lors de la mise à jour du statut.", err: error });
         } else {
           const codes = results.map(result => result.code);
-          console.log("codes", codes);
           const emailClient = await userModel.getEmailById(clientId);
           const codeElements = codes.map((code, index) => `<li key=${index}><a href="http://127.0.0.1:5173/emailPlaces/code=${code}">${code}</a></li>`);
           const emailContent = `

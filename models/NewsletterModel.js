@@ -16,6 +16,7 @@ class NewsletterModel {
     })
   }
 
+  // Verifie si le mail n'existe pas déja dans la base des mails inscrit à la newsletter
   static checkIfAllreadySusbscribed(email) {
       return db.query("SELECT * FROM newsletter WHERE email = ?", [email])
       .then((res)=>{
