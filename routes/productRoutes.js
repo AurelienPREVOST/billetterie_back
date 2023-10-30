@@ -96,7 +96,7 @@ module.exports = (app,db)=>{
       }
     })
 
-/////////////// ROUTE SPECIALE //////////////////
+///////////// ROUTE SPECIALE //////////////////
 
       //route d'ajout d'une image dans l'api (stock une image et retourne au front le nom de l'image stocké)
     app.post('/api/v1/product/pict', adminAuth, (req, res, next) =>{

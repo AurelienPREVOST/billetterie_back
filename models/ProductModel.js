@@ -40,7 +40,7 @@ class ProductModel {
 
   // enregistrer un nouveau produit
   static saveOneProduct(req){
-    return db.query('INSERT INTO products (name, type, description, address, latitude, longitude, ville, lieu, date, price, photo, quantity, creationTimestamp) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, NOW())', [req.body.name, req.body.type, req.body.description, req.body.address, req.body.latitude, req.body.longitude, req.body.ville, req.body.lieu, req.body.date, req.body.price, req.body.photo, req.body.quantity])
+    return db.query('INSERT INTO products (name, type, description, address, latitude, longitude, ville, lieu, date, price, rankWidth, photo, quantity, creationTimestamp) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, NOW())', [req.body.name, req.body.type, req.body.description, req.body.address, req.body.latitude, req.body.longitude, req.body.ville, req.body.lieu, req.body.date, req.body.price, req.body.rankWidth, req.body.photo, req.body.quantity])
     .then((res)=>{
       return res
     })
@@ -51,7 +51,7 @@ class ProductModel {
 
   // Mettre à jour un produit
   static updateOneProducts(req, id){
-    return db.query('UPDATE products SET name=? , type=?, description=?, latitude=?, longitude=?, ville=?, lieu=?, date=?, price=?, photo=?, quantity=? WHERE id=?', [req.body.name, req.body.type, req.body.description, req.body.latitude, req.body.longitude, req.body.ville, req.body.lieu, req.body.date, req.body.price, req.body.photo, req.body.quantity, id])
+    return db.query('UPDATE products SET name=? , type=?, description=?, latitude=?, longitude=?, ville=?, lieu=?, date=?, price=?, rankWidth=?, photo=?, quantity=? WHERE id=?', [req.body.name, req.body.type, req.body.description, req.body.latitude, req.body.longitude, req.body.ville, req.body.lieu, req.body.date, req.body.price, req.body.rankWidth, req.body.photo, req.body.quantity, id])
     .then((res)=>{
         return res
     })
