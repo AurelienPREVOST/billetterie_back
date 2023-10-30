@@ -16,6 +16,17 @@ NB : tout ce qui suit "stripe" est pour l'instant (24/10/23) inutile car non uti
 
 
 
+OU 
+```bash
+git clone https://github.com/AurelienPREVOST/billetterie_back.git
+nom_du_projet
+cd nom_du_projet
+npm install
+npm run dev
+```
+
+
+
 
 
 ## Etape 2 - modifier les fichiers suivants à la racine du projet :
@@ -2286,7 +2297,8 @@ COMMIT;
 
 **Schema de la base de donnée :**
 
-![image](https://github.com/AurelienPREVOST/billetterie_back/assets/102169301/795bb02d-220b-4ea4-8830-8df88e683eaa)
+![image](https://github.com/AurelienPREVOST/billetterie_back/assets/102169301/3fd9b065-5ff0-4c14-bb01-2ad2246a5c8d)
+
 
 
 **Bon à savoir** : Pour l'administrateur : admin@gmail.com 1234 (la securité avant tout👍)
