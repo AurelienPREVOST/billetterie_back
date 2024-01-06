@@ -32,24 +32,16 @@ module.exports = (app,db)=>{
 
 
     //ROUTE POUR AFFICHAGE de PRODUCT  PAR tYPE
-    app.get('/product/type/:type', async (req, res, next) => {
-      let products = await productModel.getAllProductsType(req.params.type)
-      if(products.code){
-        res.json({status: 500, msg: "il y'a eu un problème", err: products})
-      }else{
-        res.json({status: 200, result: products})
-      }
-    })
-
-    //route permettant de récuperer un seul produit
-    app.get('/product/:id', async (req, res, next) => {
-      let product = await productModel.getOneProduct(req.params.id)
-      if(product.code){
-        res.json({status: 500, msg: "il y'a eu un problème", err: product})
-      }else{
-        res.json({status: 200, result: product[0]})
-      }
-    })
+    app.get('/product/type/:type', async (req, res) => {
+      productModel
+        .getAllProductsType(req.params.type)
+        .then((result) => {
+          res.json({ status: 200, result });
+        })
+        .catch((error) => {
+          res.json({ status: 500, msg: "Il y a eu un problème", err: error });
+        });
+    });
 
     // Route permettant de créer un nouveau produit
     // ATTENTION TOKEN RETIRE adminAuth
