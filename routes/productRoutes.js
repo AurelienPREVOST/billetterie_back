@@ -32,14 +32,15 @@ module.exports = (app,db)=>{
 
 
     //ROUTE POUR AFFICHAGE de PRODUCT  PAR tYPE
-    app.get('/product/type/:type', async (req, res, next) => {
-      let products = await productModel.getAllProductsType(req.params.type)
-      if(products.code){
-        res.json({status: 500, msg: "il y'a eu un problème", err: products})
-      }else{
-        res.json({status: 200, result: products})
-      }
-    })
+    app.get('/product/type/:type', async (req, res) => 
+      /* Dans cette situation, au vu de l'implémentation de la méthode "getAllProductsType",
+         j'aurais fait cela comme ça. Qu'en penses-tu ? */
+      productModel
+        .getAllProductsType(req.params.type)
+        .then((result) => result instanceof Error
+            ? res.json({status: 500, msg: "il y'a eu un problème", err: result})
+            : res.json({status: 200, result}));
+    );
 
     //route permettant de récuperer un seul produit
     app.get('/product/:id', async (req, res, next) => {
